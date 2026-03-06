@@ -1,10 +1,11 @@
 "use client";
 
-import Image from "next/image";
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Mode = "words" | "sentences";
 type KeyboardLayer = "base" | "shift";
+type Lang = "kz" | "en" | "mn";
 
 type Keycap = {
   key: string;
@@ -142,6 +143,170 @@ const KEY_OUTPUT_MAP = KEYBOARD.flat().reduce<Record<string, KeyOutput>>((acc, i
   return acc;
 }, {});
 
+const TRANSLATIONS: Record<
+  Lang,
+  {
+    appTitle: string;
+    languageLabel: string;
+    modeWords: string;
+    modeSentences: string;
+    newText: string;
+    lessons: string;
+    wpm: string;
+    accuracy: string;
+    time: string;
+    aboutTote: string;
+    lessonsTitle: string;
+    lessonsIntro: string;
+    lessonsVideoHint: string;
+    lessonsPoints: string[];
+    lessonsSource: string;
+    pdfView: string;
+    youtubeChannel: string;
+    youtubeCardTitle: string;
+    youtubeCardSubtitle: string;
+    youtubeAlt: string;
+    targetText: string;
+    loading: string;
+    typeHere: string;
+    typePlaceholder: string;
+    exerciseComplete: string;
+    keyboardLayout: string;
+    base: string;
+    shiftPreview: string;
+    shiftOn: string;
+    shiftOff: string;
+    toteToCyrillic: string;
+  }
+> = {
+  kz: {
+    appTitle: "Қазақ төте жазу теру жаттығуы",
+    languageLabel: "Тіл",
+    modeWords: "Сөздер",
+    modeSentences: "Сөйлемдер",
+    newText: "Жаңа мәтін",
+    lessons: "Төте жазу сабақтары",
+    wpm: "WPM",
+    accuracy: "Дәлдік",
+    time: "Уақыт",
+    aboutTote: "Төте жазу туралы",
+    lessonsTitle: "ToteType сабақтары",
+    lessonsIntro:
+      "Қазақ төте жазу әліпбиі 1924 жылы араб жазуы негізінде жасалған. Әліпбиде 33 әріп бар, оның 9-ы дауысты дыбыс, қалғандары дауыссыз дыбыс. Дәйекше белгісінің қолданылуы да ерекше екені totejazwalippe.pdf материалында түсіндірілген.",
+    lessonsVideoHint:
+      "Төмендегі суретті бассаңыз, Adrian Mei (@ayszhang) YouTube арнасына тікелей өтесіз.",
+    lessonsPoints: [
+      "Төте жазу әліпбиі 1924 жылы араб графикасы негізінде жүйеленген.",
+      "Қазіргі Қазақстанда негізінен кирилл қолданылады, ал Қытайдағы қазақтар төте жазуды әлі кең қолданады.",
+      "Әліпбиде барлығы 33 әріп бар.",
+      "9 дауысты дыбыс: а, ә, е, ы, і, о, ө, ұ, ү.",
+      "У және и кей жағдайда дауысты, кей жағдайда дауыссыз қызмет атқарады.",
+      "Дәйекше (ء) белгісі сөз басында қолданылады, кейбір әріптермен қатар келгенде жазылмайды деп түсіндіріледі.",
+    ],
+    lessonsSource: "Дереккөз: totejazwalippe.pdf (локал материал)",
+    pdfView: "PDF көру",
+    youtubeChannel: "YouTube арнасы",
+    youtubeCardTitle: "Осы форматта үйрететін YouTube арнасы",
+    youtubeCardSubtitle: "Adrian Mei - @ayszhang/videos",
+    youtubeAlt: "Төте жазуды үйрететін YouTube арнасы",
+    targetText: "Нысана мәтін",
+    loading: "Жүктелуде...",
+    typeHere: "Осы жерге теріңіз",
+    typePlaceholder: "Мәтінді көшіріп жазыңыз...",
+    exerciseComplete: "Жаттығу аяқталды. Жалғастыру үшін «Жаңа мәтін» батырмасын басыңыз.",
+    keyboardLayout: "Пернетақта көрінісі",
+    base: "Негізгі",
+    shiftPreview: "Shift көрінісі",
+    shiftOn: "Shift: Қосулы (нақты)",
+    shiftOff: "Shift: Өшірулі",
+    toteToCyrillic: "Төте - кирилл",
+  },
+  en: {
+    appTitle: "Kazakh Tote Jazu Typing Practice",
+    languageLabel: "Language",
+    modeWords: "Words",
+    modeSentences: "Sentences",
+    newText: "New Text",
+    lessons: "Tote Jazu Lessons",
+    wpm: "WPM",
+    accuracy: "Accuracy",
+    time: "Time",
+    aboutTote: "About Tote Jazu",
+    lessonsTitle: "ToteType Lessons",
+    lessonsIntro:
+      "The Kazakh Tote writing alphabet was formalized in 1924 based on Arabic script. It has 33 letters, including 9 vowels, and uses a special diacritic marker in specific positions, as explained in the totejazwalippe.pdf material.",
+    lessonsVideoHint:
+      "Click the card below to go directly to Adrian Mei (@ayszhang) YouTube lessons.",
+    lessonsPoints: [
+      "The Tote writing alphabet was systematized in 1924 on the basis of Arabic script.",
+      "Today, Kazakhstan mainly uses Cyrillic, while Kazakhs in China still widely use Tote writing.",
+      "The alphabet contains 33 letters in total.",
+      "There are 9 vowels: a, ae, e, y, i, o, oe, u, ue.",
+      "The letters for 'u' and 'i' can function as vowels or consonants depending on context.",
+      "The diacritic mark (ء) is used with specific positional rules, especially around word-initial forms.",
+    ],
+    lessonsSource: "Source: totejazwalippe.pdf (local material)",
+    pdfView: "PDF View",
+    youtubeChannel: "YouTube Channel",
+    youtubeCardTitle: "A YouTube channel that teaches in this style",
+    youtubeCardSubtitle: "Adrian Mei - @ayszhang/videos",
+    youtubeAlt: "YouTube channel teaching Tote writing",
+    targetText: "Target Text",
+    loading: "Loading...",
+    typeHere: "Type Here",
+    typePlaceholder: "Type the text here...",
+    exerciseComplete: "Exercise complete. Press New Text to continue.",
+    keyboardLayout: "Keyboard Layout",
+    base: "Base",
+    shiftPreview: "Shift Preview",
+    shiftOn: "Shift: ON (live)",
+    shiftOff: "Shift: OFF",
+    toteToCyrillic: "Tote to Cyrillic",
+  },
+  mn: {
+    appTitle: "Казах төтэ бичгийн шивэлтийн дасгал",
+    languageLabel: "Хэл",
+    modeWords: "Үгс",
+    modeSentences: "Өгүүлбэр",
+    newText: "Шинэ текст",
+    lessons: "Төтэ бичгийн хичээлүүд",
+    wpm: "WPM",
+    accuracy: "Нарийвчлал",
+    time: "Хугацаа",
+    aboutTote: "Төтэ бичгийн тухай",
+    lessonsTitle: "ToteType хичээлүүд",
+    lessonsIntro:
+      "Казах төтэ бичгийн цагаан толгой нь 1924 онд араб бичигт тулгуурлан боловсруулагдсан. Нийт 33 үсэгтэй бөгөөд 9 нь эгшиг, бусад нь гийгүүлэгч байдаг. Дайекше тэмдгийн хэрэглээг totejazwalippe.pdf материалд тайлбарласан байна.",
+    lessonsVideoHint:
+      "Доорх зураг дээр дарвал Adrian Mei (@ayszhang)-ийн YouTube хичээлийн суваг руу шууд орно.",
+    lessonsPoints: [
+      "Төтэ бичгийн цагаан толгой 1924 онд араб бичигт тулгуурлан системчлогдсон.",
+      "Өнөөгийн Казахстанд кирилл давамгай хэрэглэгддэг боловч Хятад дахь казахууд төтэ бичгийг өргөн хэрэглэсээр байна.",
+      "Цагаан толгой нийт 33 үсэгтэй.",
+      "9 эгшигтэй: а, ә, е, ы, і, о, ө, ұ, ү.",
+      "У ба и үсэг нь нөхцлөөс хамааран эгшиг эсвэл гийгүүлэгчийн үүрэгтэй ордог.",
+      "Дайекше (ء) тэмдэг нь үгийн байрлалаас хамаарсан дүрэмтэй гэж материалд тайлбарласан.",
+    ],
+    lessonsSource: "Эх сурвалж: totejazwalippe.pdf (локал материал)",
+    pdfView: "PDF үзэх",
+    youtubeChannel: "YouTube суваг",
+    youtubeCardTitle: "Ингэж заадаг YouTube суваг",
+    youtubeCardSubtitle: "Adrian Mei - @ayszhang/videos",
+    youtubeAlt: "Төтэ бичиг заадаг YouTube суваг",
+    targetText: "Зорилтот текст",
+    loading: "Ачаалж байна...",
+    typeHere: "Энд бичнэ үү",
+    typePlaceholder: "Текстыг энд бичнэ үү...",
+    exerciseComplete: "Дасгал дууслаа. Үргэлжлүүлэх бол «Шинэ текст» товчийг дарна уу.",
+    keyboardLayout: "Гарын байрлал",
+    base: "Үндсэн",
+    shiftPreview: "Shift харагдац",
+    shiftOn: "Shift: Асаалттай (амьд)",
+    shiftOff: "Shift: Унтраалттай",
+    toteToCyrillic: "Төтэ - кирилл",
+  },
+};
+
 function randomFrom<T>(list: T[]) {
   return list[Math.floor(Math.random() * list.length)];
 }
@@ -161,16 +326,17 @@ function keycapWidthClass(width: Keycap["width"]) {
 }
 
 export default function Home() {
+  const [lang, setLang] = useState<Lang>("kz");
   const [mode, setMode] = useState<Mode>("words");
   const [layerPreview, setLayerPreview] = useState<KeyboardLayer>("base");
   const [isShiftHeld, setIsShiftHeld] = useState(false);
-  const [showLessons, setShowLessons] = useState(false);
   const [targetText, setTargetText] = useState("");
   const [typedText, setTypedText] = useState("");
   const [startedAt, setStartedAt] = useState<number | null>(null);
   const [endedAt, setEndedAt] = useState<number | null>(null);
   const [now, setNow] = useState(() => Date.now());
   const [loading, setLoading] = useState(true);
+  const t = TRANSLATIONS[lang];
 
   const keyboardLayer: KeyboardLayer = isShiftHeld ? "shift" : layerPreview;
   const currentChar = targetText[typedText.length] || "";
@@ -264,9 +430,47 @@ export default function Home() {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-muted">ToteType</p>
-              <h1 className="mt-1 text-3xl font-semibold">Kazakh Tote Jazu Typing Practice</h1>
+              <h1 className="mt-1 text-3xl font-semibold">{t.appTitle}</h1>
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="flex items-center gap-1 rounded-xl bg-surface-soft p-1">
+                <span className="px-2 text-xs font-medium text-muted">{t.languageLabel}</span>
+                <button
+                  type="button"
+                  onClick={() => setLang("kz")}
+                  className={`rounded-lg px-2.5 py-1 text-xs font-medium ${
+                    lang === "kz" ? "bg-accent text-white" : "text-foreground"
+                  }`}
+                >
+                  Қазақ
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLang("en")}
+                  className={`rounded-lg px-2.5 py-1 text-xs font-medium ${
+                    lang === "en" ? "bg-accent text-white" : "text-foreground"
+                  }`}
+                >
+                  English
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLang("mn")}
+                  className={`rounded-lg px-2.5 py-1 text-xs font-medium ${
+                    lang === "mn" ? "bg-accent text-white" : "text-foreground"
+                  }`}
+                >
+                  Монгол
+                </button>
+              </div>
+              <div className="flex items-center gap-1 rounded-xl bg-surface-soft p-1">
+                <Link href="/" className="rounded-lg bg-accent px-3 py-1 text-xs font-medium text-white">
+                  Typing
+                </Link>
+                <Link href="/lessons" className="rounded-lg px-3 py-1 text-xs font-medium text-foreground">
+                  Lessons
+                </Link>
+              </div>
               <button
                 type="button"
                 onClick={() => setMode("words")}
@@ -274,7 +478,7 @@ export default function Home() {
                   mode === "words" ? "bg-accent text-white" : "bg-surface-soft text-foreground"
                 }`}
               >
-                Words
+                {t.modeWords}
               </button>
               <button
                 type="button"
@@ -283,99 +487,38 @@ export default function Home() {
                   mode === "sentences" ? "bg-accent text-white" : "bg-surface-soft text-foreground"
                 }`}
               >
-                Sentences
+                {t.modeSentences}
               </button>
               <button
                 type="button"
                 onClick={() => void loadExercise(mode)}
                 className="rounded-xl bg-foreground px-4 py-2 text-sm font-medium text-surface"
               >
-                New Text
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowLessons((prev) => !prev)}
-                className={`rounded-xl px-4 py-2 text-sm font-medium ${
-                  showLessons ? "bg-accent text-white" : "bg-surface-soft text-foreground"
-                }`}
-              >
-                Tote Jazu Lessons
+                {t.newText}
               </button>
             </div>
           </div>
 
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             <div className="rounded-2xl bg-surface-soft p-4">
-              <p className="text-xs uppercase tracking-wide text-muted">WPM</p>
+              <p className="text-xs uppercase tracking-wide text-muted">{t.wpm}</p>
               <p className="mt-2 text-3xl font-semibold">{stats.wpm.toFixed(1)}</p>
             </div>
             <div className="rounded-2xl bg-surface-soft p-4">
-              <p className="text-xs uppercase tracking-wide text-muted">Accuracy</p>
+              <p className="text-xs uppercase tracking-wide text-muted">{t.accuracy}</p>
               <p className="mt-2 text-3xl font-semibold">{stats.accuracy.toFixed(1)}%</p>
             </div>
             <div className="rounded-2xl bg-surface-soft p-4">
-              <p className="text-xs uppercase tracking-wide text-muted">Time</p>
+              <p className="text-xs uppercase tracking-wide text-muted">{t.time}</p>
               <p className="mt-2 text-3xl font-semibold">{stats.elapsedSec.toFixed(1)}s</p>
             </div>
           </div>
 
-          {showLessons && (
-            <div className="mt-6 rounded-2xl border border-[#dbc9a2] bg-[#fff9ea] p-5">
-              <p className="text-xs uppercase tracking-wide text-muted">About Tote Jazu</p>
-              <h2 className="mt-2 text-2xl font-semibold">ToteType Hicheeluud</h2>
-              <p className="mt-3 text-sm leading-7 text-[#4b3b1e]">
-                Tote jazw alipbisi ni 1924 ond arab bicgiin undes deer tusgaarlan zohioson kazak alin nigen
-                bicgiin helber yum. Ene alipbid niit 33 usegtei, 9 ni egshig avias, busad ni gyigyylegch avias
-                buguud dayekshe temdeg ashigladag onclogtoi gej `totejazwalippe.pdf` deer tailbarlasan baina.
-              </p>
-              <p className="mt-2 text-sm leading-7 text-[#4b3b1e]">
-                Doorh card deer darahad Tote jazw zaadag Adrian Mei (`@ayszhang`) YouTube suvag ruu shuud ochno.
-              </p>
-              <div className="mt-4 flex flex-wrap gap-3">
-                <a
-                  href="/totejazwalippe.pdf"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-xl bg-foreground px-4 py-2 text-sm font-medium text-surface"
-                >
-                  PDF View
-                </a>
-                <a
-                  href="https://www.youtube.com/@ayszhang/videos"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-white"
-                >
-                  YouTube Channel
-                </a>
-              </div>
-              <a
-                href="https://www.youtube.com/@ayszhang/videos"
-                target="_blank"
-                rel="noreferrer"
-                className="mt-5 block overflow-hidden rounded-2xl border border-[#d6c59d] bg-[#fffdf6] shadow-[0_8px_24px_rgba(80,62,28,0.12)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(80,62,28,0.2)]"
-              >
-                <Image
-                  src="/TOTE-TYPE.png"
-                  alt="Tote jazw zaadag hunii YouTube suvag"
-                  width={1200}
-                  height={675}
-                  className="h-auto w-full"
-                  priority={false}
-                />
-                <div className="p-4">
-                  <p className="text-sm font-semibold">Iim ingej zaadag hunii YouTube suvag</p>
-                  <p className="mt-1 text-xs text-muted">Adrian Mei - @ayszhang/videos</p>
-                </div>
-              </a>
-            </div>
-          )}
-
           <div className="mt-6 rounded-2xl border border-[#dbc9a2] bg-[#fff8e8] p-5">
-            <p className="mb-2 text-xs uppercase tracking-wide text-muted">Target Text</p>
+            <p className="mb-2 text-xs uppercase tracking-wide text-muted">{t.targetText}</p>
             <div dir="rtl" className="font-arabic text-right text-3xl leading-relaxed">
               {loading ? (
-                <span className="text-muted">Loading...</span>
+                <span className="text-muted">{t.loading}</span>
               ) : (
                 targetText.split("").map((char, index) => {
                   let className = "char";
@@ -396,7 +539,7 @@ export default function Home() {
 
           <div className="mt-4">
             <label htmlFor="typing" className="mb-2 block text-xs uppercase tracking-wide text-muted">
-              Type Here
+              {t.typeHere}
             </label>
             <textarea
               id="typing"
@@ -426,19 +569,19 @@ export default function Home() {
               onKeyUp={(event) => {
                 if (event.code === "ShiftLeft" || event.code === "ShiftRight") setIsShiftHeld(false);
               }}
-              placeholder="ماتىندى كوشىرٸپ جازىڭىز..."
+              placeholder={t.typePlaceholder}
             />
           </div>
 
           {completed && (
             <p className="mt-3 rounded-xl bg-[#d9f4e3] px-4 py-2 text-sm font-medium text-[#145a31]">
-              Exercise complete. Press New Text to continue.
+              {t.exerciseComplete}
             </p>
           )}
 
           <div className="mt-7 rounded-2xl border border-[#dbc9a2] bg-[#fffbef] p-5">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
-              <p className="text-xs uppercase tracking-wide text-muted">Keyboard Layout</p>
+              <p className="text-xs uppercase tracking-wide text-muted">{t.keyboardLayout}</p>
               <div className="flex items-center gap-2">
                 <button
                   type="button"
@@ -447,7 +590,7 @@ export default function Home() {
                     layerPreview === "base" ? "bg-accent text-white" : "bg-surface-soft text-foreground"
                   }`}
                 >
-                  Base
+                  {t.base}
                 </button>
                 <button
                   type="button"
@@ -456,10 +599,10 @@ export default function Home() {
                     layerPreview === "shift" ? "bg-accent text-white" : "bg-surface-soft text-foreground"
                   }`}
                 >
-                  Shift Preview
+                  {t.shiftPreview}
                 </button>
                 <span className={`text-xs ${isShiftHeld ? "text-accent" : "text-muted"}`}>
-                  {isShiftHeld ? "Shift: ON (live)" : "Shift: OFF"}
+                  {isShiftHeld ? t.shiftOn : t.shiftOff}
                 </span>
               </div>
             </div>
@@ -498,7 +641,7 @@ export default function Home() {
         </div>
 
         <aside className="rounded-2xl border border-[#dbc9a2] bg-[#fffbef] p-4 lg:sticky lg:top-8 lg:h-fit">
-          <p className="text-xs uppercase tracking-wide text-muted">Tote to Cyrillic</p>
+          <p className="text-xs uppercase tracking-wide text-muted">{t.toteToCyrillic}</p>
           <div className="mt-3 max-h-[68vh] overflow-auto pr-1">
             {LETTER_GUIDE.map((item) => (
               <div
