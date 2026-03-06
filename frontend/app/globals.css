@@ -32,7 +32,7 @@ body {
 }
 
 .font-arabic {
-  font-family: "Noto Naskh Arabic", "Amiri", "Scheherazade New", serif;
+  font-family: var(--font-noto-sans-arabic), var(--font-noto-naskh-arabic), "Noto Sans Arabic", "Noto Naskh Arabic", "Scheherazade New", "Amiri", serif;
 }
 
 .paper-bg {

@@ -1,5 +1,20 @@
 import type { Metadata } from "next";
+import { Noto_Naskh_Arabic, Noto_Sans_Arabic } from "next/font/google";
 import "./globals.css";
+
+const notoSansArabic = Noto_Sans_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "700"],
+  variable: "--font-noto-sans-arabic",
+  display: "swap",
+});
+
+const notoNaskhArabic = Noto_Naskh_Arabic({
+  subsets: ["arabic"],
+  weight: ["400", "500", "700"],
+  variable: "--font-noto-naskh-arabic",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "ToteType",
@@ -13,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased">{children}</body>
+      <body className={`${notoSansArabic.variable} ${notoNaskhArabic.variable} antialiased`}>{children}</body>
     </html>
   );
 }
