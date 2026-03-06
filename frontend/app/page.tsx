@@ -424,8 +424,8 @@ export default function Home() {
   }, [typedText, targetText, startedAt, endedAt, now]);
 
   return (
-    <main className="paper-bg min-h-screen px-4 py-10 text-foreground md:px-8">
-      <div className="fixed right-4 top-4 z-20">
+    <main className="paper-bg min-h-screen px-3 py-6 text-foreground md:px-8 md:py-10">
+      <div className="fixed right-3 top-3 z-20 md:right-4 md:top-4">
         <select
           id="lang-select"
           value={lang}
@@ -437,21 +437,24 @@ export default function Home() {
           <option value="mn">Монгол</option>
         </select>
       </div>
-      <section className="mx-auto grid w-[92%] gap-8 lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-x-12">
+      <section className="mx-auto grid w-[94%] gap-8 md:w-[92%] lg:grid-cols-[minmax(0,1fr)_280px] lg:gap-x-12">
         <div className="w-full">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-muted">ToteType</p>
-              <h1 className="mt-1 text-3xl font-semibold">{t.appTitle}</h1>
+              <h1 className="mt-1 text-2xl font-semibold md:text-3xl">{t.appTitle}</h1>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              <Link href="/lessons" className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-white">
+            <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto">
+              <Link
+                href="/lessons"
+                className="rounded-xl bg-accent px-4 py-2 text-center text-sm font-medium text-white max-sm:flex-1"
+              >
                 {t.lessons}
               </Link>
               <button
                 type="button"
                 onClick={() => setMode("words")}
-                className={`rounded-xl px-4 py-2 text-sm font-medium ${
+                className={`rounded-xl px-4 py-2 text-sm font-medium max-sm:flex-1 ${
                   mode === "words" ? "bg-accent text-white" : "bg-surface-soft text-foreground"
                 }`}
               >
@@ -460,7 +463,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => setMode("sentences")}
-                className={`rounded-xl px-4 py-2 text-sm font-medium ${
+                className={`rounded-xl px-4 py-2 text-sm font-medium max-sm:flex-1 ${
                   mode === "sentences" ? "bg-accent text-white" : "bg-surface-soft text-foreground"
                 }`}
               >
@@ -469,7 +472,7 @@ export default function Home() {
               <button
                 type="button"
                 onClick={() => void loadExercise(mode)}
-                className="rounded-xl bg-foreground px-4 py-2 text-sm font-medium text-surface"
+                className="rounded-xl bg-foreground px-4 py-2 text-sm font-medium text-surface max-sm:flex-1"
               >
                 {t.newText}
               </button>
@@ -491,9 +494,9 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="mt-6 rounded-2xl border border-[#dbc9a2] bg-[#fff8e8] p-5">
+          <div className="mt-6 rounded-2xl border border-[#dbc9a2] bg-[#fff8e8] p-4 md:p-5">
             <p className="mb-2 text-xs uppercase tracking-wide text-muted">{t.targetText}</p>
-            <div dir="rtl" className="font-arabic text-right text-3xl leading-relaxed">
+            <div dir="rtl" className="font-arabic text-right text-2xl leading-relaxed md:text-3xl">
               {loading ? (
                 <span className="text-muted">{t.loading}</span>
               ) : (
@@ -521,7 +524,7 @@ export default function Home() {
             <textarea
               id="typing"
               dir="rtl"
-              className="font-arabic h-36 w-full resize-none rounded-2xl border border-[#d9c79e] bg-white p-4 text-right text-2xl outline-none focus:border-accent"
+              className="font-arabic h-28 w-full resize-none rounded-2xl border border-[#d9c79e] bg-white p-4 text-right text-xl outline-none focus:border-accent md:h-36 md:text-2xl"
               value={typedText}
               readOnly
               disabled={loading}
@@ -556,7 +559,7 @@ export default function Home() {
             </p>
           )}
 
-          <div className="mt-7 rounded-2xl border border-[#dbc9a2] bg-[#fffbef] p-5 md:mx-auto md:w-[92%]">
+          <div className="mt-7 rounded-2xl border border-[#dbc9a2] bg-[#fffbef] p-4 md:mx-auto md:w-[92%] md:p-5">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
               <p className="text-xs uppercase tracking-wide text-muted">{t.keyboardLayout}</p>
               <div className="flex items-center gap-2">
@@ -583,43 +586,45 @@ export default function Home() {
                 </span>
               </div>
             </div>
-            <div className="keyboard-shell space-y-2 overflow-hidden rounded-xl border border-[#dbc9a2] bg-[#f7f0de] p-3">
-              {KEYBOARD.map((row, rowIndex) => (
-                <div key={`row-${rowIndex}`} className="keyboard-row flex w-full gap-2">
-                  {row.map((item) => {
-                    const shown = keyboardLayer === "shift" ? item.shift || item.base : item.base;
-                    const isActiveChar = shown && currentChar === shown;
-                    const isShiftKey = item.key === "ShiftLeft" || item.key === "ShiftRight";
-                    const active = Boolean(isActiveChar || (isShiftKey && isShiftHeld));
-                    return (
-                      <button
-                        type="button"
-                        key={item.key}
-                        disabled={loading}
-                        onClick={() => {
-                          if (isShiftKey) {
-                            setLayerPreview((prev) => (prev === "base" ? "shift" : "base"));
-                            return;
-                          }
-                          const mapped = typeFromCode(item.key, keyboardLayer === "shift");
-                          if (mapped !== null) appendTyped(mapped);
-                        }}
-                        className={`keycap ${keycapWidthClass(item.width)} ${active ? "active" : ""}`}
-                      >
-                        <span className="keycap-latin">{item.latin}</span>
-                        <span className="font-arabic keycap-tote">{shown || ""}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              ))}
+            <div className="keyboard-shell keyboard-scroll overflow-x-auto rounded-xl border border-[#dbc9a2] bg-[#f7f0de] p-3">
+              <div className="min-w-[620px] space-y-2 lg:min-w-0">
+                {KEYBOARD.map((row, rowIndex) => (
+                  <div key={`row-${rowIndex}`} className="keyboard-row flex w-full gap-2">
+                    {row.map((item) => {
+                      const shown = keyboardLayer === "shift" ? item.shift || item.base : item.base;
+                      const isActiveChar = shown && currentChar === shown;
+                      const isShiftKey = item.key === "ShiftLeft" || item.key === "ShiftRight";
+                      const active = Boolean(isActiveChar || (isShiftKey && isShiftHeld));
+                      return (
+                        <button
+                          type="button"
+                          key={item.key}
+                          disabled={loading}
+                          onClick={() => {
+                            if (isShiftKey) {
+                              setLayerPreview((prev) => (prev === "base" ? "shift" : "base"));
+                              return;
+                            }
+                            const mapped = typeFromCode(item.key, keyboardLayer === "shift");
+                            if (mapped !== null) appendTyped(mapped);
+                          }}
+                          className={`keycap ${keycapWidthClass(item.width)} ${active ? "active" : ""}`}
+                        >
+                          <span className="keycap-latin">{item.latin}</span>
+                          <span className="font-arabic keycap-tote">{shown || ""}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        <aside className="mt-14 rounded-2xl border border-[#dbc9a2] bg-[#fffbef] p-4 lg:sticky lg:top-24 lg:mt-0 lg:h-fit">
+        <aside className="mt-8 rounded-2xl border border-[#dbc9a2] bg-[#fffbef] p-4 lg:sticky lg:top-24 lg:mt-0 lg:h-fit">
           <p className="text-xs uppercase tracking-wide text-muted">{t.toteToCyrillic}</p>
-          <div className="mt-3 max-h-[68vh] overflow-auto pr-1">
+          <div className="mt-3 max-h-[52vh] overflow-auto pr-1 lg:max-h-[68vh]">
             {LETTER_GUIDE.map((item) => (
               <div
                 key={item.tote}

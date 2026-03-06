@@ -104,8 +104,8 @@ export default function LessonsPage() {
   const t = TRANSLATIONS[lang];
 
   return (
-    <main className="paper-bg min-h-screen px-4 py-10 text-foreground md:px-8">
-      <div className="fixed right-4 top-4 z-20">
+    <main className="paper-bg min-h-screen px-3 py-6 text-foreground md:px-8 md:py-10">
+      <div className="fixed right-3 top-3 z-20 md:right-4 md:top-4">
         <select
           id="lang-select"
           value={lang}
@@ -118,16 +118,16 @@ export default function LessonsPage() {
         </select>
       </div>
 
-      <section className="mx-auto w-[92%]">
+      <section className="mx-auto w-[94%] md:w-[92%]">
         <div>
           <Link href="/" className="rounded-xl bg-foreground px-4 py-2 text-sm font-medium text-surface">
             {t.backLabel}
           </Link>
           <p className="mt-4 text-sm uppercase tracking-[0.2em] text-muted">ToteType</p>
-          <h1 className="mt-1 text-3xl font-semibold">{t.appTitle}</h1>
+          <h1 className="mt-1 text-2xl font-semibold md:text-3xl">{t.appTitle}</h1>
         </div>
 
-        <div className="mt-6 p-5">
+        <div className="mt-6 p-4 md:p-5">
           <p className="text-xs uppercase tracking-wide text-muted">{t.aboutTote}</p>
           <h2 className="mt-2 text-2xl font-semibold">{t.lessonsTitle}</h2>
           <p className="mt-3 text-sm leading-7 text-[#4b3b1e]">{t.lessonsIntro}</p>
@@ -143,7 +143,7 @@ export default function LessonsPage() {
               href="/totejazwalippe.pdf"
               target="_blank"
               rel="noreferrer"
-              className="rounded-xl bg-foreground px-4 py-2 text-sm font-medium text-surface"
+              className="rounded-xl bg-foreground px-4 py-2 text-center text-sm font-medium text-surface max-sm:flex-1"
             >
               {t.pdfView}
             </a>
@@ -151,7 +151,7 @@ export default function LessonsPage() {
               href="https://www.youtube.com/@ayszhang/videos"
               target="_blank"
               rel="noreferrer"
-              className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-white"
+              className="rounded-xl bg-accent px-4 py-2 text-center text-sm font-medium text-white max-sm:flex-1"
             >
               {t.youtubeChannel}
             </a>
