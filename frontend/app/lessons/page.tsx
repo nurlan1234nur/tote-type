@@ -105,15 +105,12 @@ export default function LessonsPage() {
 
   return (
     <main className="paper-bg min-h-screen px-4 py-10 text-foreground md:px-8">
-      <div className="fixed right-4 top-4 z-20 rounded-xl border border-[#d7c8a7] bg-surface px-3 py-2 shadow-[0_8px_18px_rgba(80,62,28,0.12)]">
-        <label htmlFor="lang-select" className="mr-2 text-xs font-medium text-muted">
-          {t.languageLabel}
-        </label>
+      <div className="fixed right-4 top-4 z-20">
         <select
           id="lang-select"
           value={lang}
           onChange={(event) => setLang(event.target.value as Lang)}
-          className="rounded-md border border-[#d5c49b] bg-white px-2 py-1 text-xs"
+          className="rounded-md bg-surface-soft px-2 py-1 text-xs shadow-[0_6px_14px_rgba(80,62,28,0.14)] outline-none"
         >
           <option value="kz">Қазақ</option>
           <option value="en">English</option>
