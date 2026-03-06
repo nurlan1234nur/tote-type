@@ -1,8 +1,4 @@
-const express = require("express");
-const cors = require("cors");
-
-const app = express();
-const PORT = process.env.PORT || 4000;
+import { NextResponse } from "next/server";
 
 const WORDS = [
   "قازاق",
@@ -49,43 +45,30 @@ const SENTENCES = [
   "تازا جازۋ ءۇشٸن اەربىر سوزدى بايقاپ قايتالاپ جازىڭىز.",
 ];
 
-app.use(cors());
-app.use(express.json());
-
-function randomInt(max) {
+function randomInt(max: number) {
   return Math.floor(Math.random() * max);
 }
 
-function createWords(count) {
+function createWords(count: number) {
   return Array.from({ length: count }, () => WORDS[randomInt(WORDS.length)]).join(" ");
 }
 
-function createSentenceBlock(count) {
-  return Array.from(
-    { length: count },
-    () => SENTENCES[randomInt(SENTENCES.length)],
-  ).join(" ");
+function createSentenceBlock(count: number) {
+  return Array.from({ length: count }, () => SENTENCES[randomInt(SENTENCES.length)]).join(" ");
 }
 
-app.get("/", (req, res) => {
-  res.send("ToteType API running");
-});
-
-app.get("/api/text", (req, res) => {
-  const mode = req.query.mode === "sentences" ? "sentences" : "words";
-  const countRaw = Number.parseInt(String(req.query.count || ""), 10);
+export function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
+  const mode = searchParams.get("mode") === "sentences" ? "sentences" : "words";
+  const countRaw = Number.parseInt(searchParams.get("count") || "", 10);
   const count = Number.isNaN(countRaw) ? (mode === "words" ? 15 : 2) : countRaw;
   const safeCount = Math.min(Math.max(count, 1), mode === "words" ? 60 : 8);
 
   const text = mode === "words" ? createWords(safeCount) : createSentenceBlock(safeCount);
 
-  res.json({
+  return NextResponse.json({
     mode,
     count: safeCount,
     text,
   });
-});
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+}
