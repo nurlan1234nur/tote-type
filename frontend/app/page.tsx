@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 type Mode = "words" | "sentences";
@@ -163,6 +164,7 @@ export default function Home() {
   const [mode, setMode] = useState<Mode>("words");
   const [layerPreview, setLayerPreview] = useState<KeyboardLayer>("base");
   const [isShiftHeld, setIsShiftHeld] = useState(false);
+  const [showLessons, setShowLessons] = useState(false);
   const [targetText, setTargetText] = useState("");
   const [typedText, setTypedText] = useState("");
   const [startedAt, setStartedAt] = useState<number | null>(null);
@@ -290,6 +292,15 @@ export default function Home() {
               >
                 New Text
               </button>
+              <button
+                type="button"
+                onClick={() => setShowLessons((prev) => !prev)}
+                className={`rounded-xl px-4 py-2 text-sm font-medium ${
+                  showLessons ? "bg-accent text-white" : "bg-surface-soft text-foreground"
+                }`}
+              >
+                Tote Jazu Lessons
+              </button>
             </div>
           </div>
 
@@ -307,6 +318,58 @@ export default function Home() {
               <p className="mt-2 text-3xl font-semibold">{stats.elapsedSec.toFixed(1)}s</p>
             </div>
           </div>
+
+          {showLessons && (
+            <div className="mt-6 rounded-2xl border border-[#dbc9a2] bg-[#fff9ea] p-5">
+              <p className="text-xs uppercase tracking-wide text-muted">About Tote Jazu</p>
+              <h2 className="mt-2 text-2xl font-semibold">ToteType Hicheeluud</h2>
+              <p className="mt-3 text-sm leading-7 text-[#4b3b1e]">
+                Tote jazw alipbisi ni 1924 ond arab bicgiin undes deer tusgaarlan zohioson kazak alin nigen
+                bicgiin helber yum. Ene alipbid niit 33 usegtei, 9 ni egshig avias, busad ni gyigyylegch avias
+                buguud dayekshe temdeg ashigladag onclogtoi gej `totejazwalippe.pdf` deer tailbarlasan baina.
+              </p>
+              <p className="mt-2 text-sm leading-7 text-[#4b3b1e]">
+                Doorh card deer darahad Tote jazw zaadag Adrian Mei (`@ayszhang`) YouTube suvag ruu shuud ochno.
+              </p>
+              <div className="mt-4 flex flex-wrap gap-3">
+                <a
+                  href="/totejazwalippe.pdf"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-xl bg-foreground px-4 py-2 text-sm font-medium text-surface"
+                >
+                  PDF View
+                </a>
+                <a
+                  href="https://www.youtube.com/@ayszhang/videos"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-white"
+                >
+                  YouTube Channel
+                </a>
+              </div>
+              <a
+                href="https://www.youtube.com/@ayszhang/videos"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-5 block overflow-hidden rounded-2xl border border-[#d6c59d] bg-[#fffdf6] shadow-[0_8px_24px_rgba(80,62,28,0.12)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_28px_rgba(80,62,28,0.2)]"
+              >
+                <Image
+                  src="/TOTE-TYPE.png"
+                  alt="Tote jazw zaadag hunii YouTube suvag"
+                  width={1200}
+                  height={675}
+                  className="h-auto w-full"
+                  priority={false}
+                />
+                <div className="p-4">
+                  <p className="text-sm font-semibold">Iim ingej zaadag hunii YouTube suvag</p>
+                  <p className="mt-1 text-xs text-muted">Adrian Mei - @ayszhang/videos</p>
+                </div>
+              </a>
+            </div>
+          )}
 
           <div className="mt-6 rounded-2xl border border-[#dbc9a2] bg-[#fff8e8] p-5">
             <p className="mb-2 text-xs uppercase tracking-wide text-muted">Target Text</p>
