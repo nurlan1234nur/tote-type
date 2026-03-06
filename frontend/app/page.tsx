@@ -326,6 +326,11 @@ function keycapWidthClass(width: Keycap["width"]) {
   return "";
 }
 
+function normalizeTargetText(text: string) {
+  // Keep target text aligned with available key outputs in this app layout.
+  return text.replaceAll("ئ", "ءى");
+}
+
 export default function Home() {
   const [lang, setLang] = useState<Lang>("kz");
   const [mode, setMode] = useState<Mode>("words");
@@ -366,9 +371,9 @@ export default function Home() {
         throw new Error("Failed to load text");
       }
       const data = (await response.json()) as { text?: string };
-      setTargetText(data.text || fallbackText(nextMode));
+      setTargetText(normalizeTargetText(data.text || fallbackText(nextMode)));
     } catch {
-      setTargetText(fallbackText(nextMode));
+      setTargetText(normalizeTargetText(fallbackText(nextMode)));
     } finally {
       setTypedText("");
       setStartedAt(null);
