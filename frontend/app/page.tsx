@@ -97,6 +97,7 @@ const KEYBOARD: Keycap[][] = [
     { key: "BracketLeft", latin: "[", base: "«", shift: "]" },
     { key: "BracketRight", latin: "]", base: "»", shift: "[" },
     { key: "Backslash", latin: "\\", base: "|", shift: "\\" },
+    { key: "Backspace", latin: "Backspace", width: "xwide" },
   ],
   [
     { key: "CapsLock", latin: "Caps", width: "xwide" },
@@ -600,14 +601,18 @@ export default function Home() {
                           type="button"
                           key={item.key}
                           disabled={loading}
-                          onClick={() => {
-                            if (isShiftKey) {
-                              setLayerPreview((prev) => (prev === "base" ? "shift" : "base"));
-                              return;
-                            }
-                            const mapped = typeFromCode(item.key, keyboardLayer === "shift");
-                            if (mapped !== null) appendTyped(mapped);
-                          }}
+                        onClick={() => {
+                          if (isShiftKey) {
+                            setLayerPreview((prev) => (prev === "base" ? "shift" : "base"));
+                            return;
+                          }
+                          if (item.key === "Backspace") {
+                            setTypedText((prev) => prev.slice(0, -1));
+                            return;
+                          }
+                          const mapped = typeFromCode(item.key, keyboardLayer === "shift");
+                          if (mapped !== null) appendTyped(mapped);
+                        }}
                           className={`keycap ${keycapWidthClass(item.width)} ${active ? "active" : ""}`}
                         >
                           <span className="keycap-latin">{item.latin}</span>
