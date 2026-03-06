@@ -121,7 +121,7 @@ export default function LessonsPage() {
         </select>
       </div>
 
-      <section className="mx-auto max-w-5xl">
+      <section className="w-full">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-sm uppercase tracking-[0.2em] text-muted">ToteType</p>

@@ -440,7 +440,7 @@ export default function Home() {
           <option value="mn">Монгол</option>
         </select>
       </div>
-      <section className="mx-auto grid max-w-6xl gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+      <section className="grid w-full gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
         <div>
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
