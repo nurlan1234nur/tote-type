@@ -119,17 +119,15 @@ export default function LessonsPage() {
       </div>
 
       <section className="mx-auto w-[92%]">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-sm uppercase tracking-[0.2em] text-muted">ToteType</p>
-            <h1 className="mt-1 text-3xl font-semibold">{t.appTitle}</h1>
-          </div>
+        <div>
           <Link href="/" className="rounded-xl bg-foreground px-4 py-2 text-sm font-medium text-surface">
             {t.backLabel}
           </Link>
+          <p className="mt-4 text-sm uppercase tracking-[0.2em] text-muted">ToteType</p>
+          <h1 className="mt-1 text-3xl font-semibold">{t.appTitle}</h1>
         </div>
 
-        <div className="mt-6 rounded-2xl bg-[#fff9ea] p-5">
+        <div className="mt-6 p-5">
           <p className="text-xs uppercase tracking-wide text-muted">{t.aboutTote}</p>
           <h2 className="mt-2 text-2xl font-semibold">{t.lessonsTitle}</h2>
           <p className="mt-3 text-sm leading-7 text-[#4b3b1e]">{t.lessonsIntro}</p>
