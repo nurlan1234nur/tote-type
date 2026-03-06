@@ -11,8 +11,7 @@ const TRANSLATIONS: Record<
   {
     appTitle: string;
     languageLabel: string;
-    typingNav: string;
-    lessonsNav: string;
+    backLabel: string;
     aboutTote: string;
     lessonsTitle: string;
     lessonsIntro: string;
@@ -29,8 +28,7 @@ const TRANSLATIONS: Record<
   kz: {
     appTitle: "Қазақ төте жазу сабақтары",
     languageLabel: "Тіл",
-    typingNav: "Теру",
-    lessonsNav: "Сабақтар",
+    backLabel: "Буцах",
     aboutTote: "Төте жазу туралы",
     lessonsTitle: "ToteType сабақтары",
     lessonsIntro:
@@ -54,8 +52,7 @@ const TRANSLATIONS: Record<
   en: {
     appTitle: "Kazakh Tote Jazu Lessons",
     languageLabel: "Language",
-    typingNav: "Typing",
-    lessonsNav: "Lessons",
+    backLabel: "Back",
     aboutTote: "About Tote Jazu",
     lessonsTitle: "ToteType Lessons",
     lessonsIntro:
@@ -79,8 +76,7 @@ const TRANSLATIONS: Record<
   mn: {
     appTitle: "Казах төтэ бичгийн хичээл",
     languageLabel: "Хэл",
-    typingNav: "Шивэлт",
-    lessonsNav: "Хичээл",
+    backLabel: "Буцах",
     aboutTote: "Төтэ бичгийн тухай",
     lessonsTitle: "ToteType хичээлүүд",
     lessonsIntro:
@@ -109,52 +105,31 @@ export default function LessonsPage() {
 
   return (
     <main className="paper-bg min-h-screen px-4 py-10 text-foreground md:px-8">
-      <section className="mx-auto max-w-5xl rounded-3xl border border-[#d7c8a7] bg-surface p-5 shadow-[0_12px_30px_rgba(80,62,28,0.11)] md:p-8">
+      <div className="fixed right-4 top-4 z-20 rounded-xl border border-[#d7c8a7] bg-surface px-3 py-2 shadow-[0_8px_18px_rgba(80,62,28,0.12)]">
+        <label htmlFor="lang-select" className="mr-2 text-xs font-medium text-muted">
+          {t.languageLabel}
+        </label>
+        <select
+          id="lang-select"
+          value={lang}
+          onChange={(event) => setLang(event.target.value as Lang)}
+          className="rounded-md border border-[#d5c49b] bg-white px-2 py-1 text-xs"
+        >
+          <option value="kz">Қазақ</option>
+          <option value="en">English</option>
+          <option value="mn">Монгол</option>
+        </select>
+      </div>
+
+      <section className="mx-auto max-w-5xl">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="text-sm uppercase tracking-[0.2em] text-muted">ToteType</p>
             <h1 className="mt-1 text-3xl font-semibold">{t.appTitle}</h1>
           </div>
-          <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-1 rounded-xl bg-surface-soft p-1">
-              <span className="px-2 text-xs font-medium text-muted">{t.languageLabel}</span>
-              <button
-                type="button"
-                onClick={() => setLang("kz")}
-                className={`rounded-lg px-2.5 py-1 text-xs font-medium ${
-                  lang === "kz" ? "bg-accent text-white" : "text-foreground"
-                }`}
-              >
-                Қазақ
-              </button>
-              <button
-                type="button"
-                onClick={() => setLang("en")}
-                className={`rounded-lg px-2.5 py-1 text-xs font-medium ${
-                  lang === "en" ? "bg-accent text-white" : "text-foreground"
-                }`}
-              >
-                English
-              </button>
-              <button
-                type="button"
-                onClick={() => setLang("mn")}
-                className={`rounded-lg px-2.5 py-1 text-xs font-medium ${
-                  lang === "mn" ? "bg-accent text-white" : "text-foreground"
-                }`}
-              >
-                Монгол
-              </button>
-            </div>
-            <div className="flex items-center gap-1 rounded-xl bg-surface-soft p-1">
-              <Link href="/" className="rounded-lg px-3 py-1 text-xs font-medium text-foreground">
-                {t.typingNav}
-              </Link>
-              <Link href="/lessons" className="rounded-lg bg-accent px-3 py-1 text-xs font-medium text-white">
-                {t.lessonsNav}
-              </Link>
-            </div>
-          </div>
+          <Link href="/" className="rounded-xl bg-foreground px-4 py-2 text-sm font-medium text-surface">
+            {t.backLabel}
+          </Link>
         </div>
 
         <div className="mt-6 rounded-2xl border border-[#dbc9a2] bg-[#fff9ea] p-5">
