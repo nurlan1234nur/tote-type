@@ -129,7 +129,7 @@ export default function LessonsPage() {
           </Link>
         </div>
 
-        <div className="mt-6 rounded-2xl border border-[#dbc9a2] bg-[#fff9ea] p-5">
+        <div className="mt-6 rounded-2xl bg-[#fff9ea] p-5">
           <p className="text-xs uppercase tracking-wide text-muted">{t.aboutTote}</p>
           <h2 className="mt-2 text-2xl font-semibold">{t.lessonsTitle}</h2>
           <p className="mt-3 text-sm leading-7 text-[#4b3b1e]">{t.lessonsIntro}</p>
