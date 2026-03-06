@@ -28,7 +28,7 @@ const TRANSLATIONS: Record<
   kz: {
     appTitle: "Қазақ төте жазу сабақтары",
     languageLabel: "Тіл",
-    backLabel: "Буцах",
+    backLabel: "Қайту",
     aboutTote: "Төте жазу туралы",
     lessonsTitle: "ToteType сабақтары",
     lessonsIntro:

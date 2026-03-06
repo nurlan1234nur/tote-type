@@ -437,8 +437,8 @@ export default function Home() {
           <option value="mn">Монгол</option>
         </select>
       </div>
-      <section className="grid w-full gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
-        <div>
+      <section className="mx-auto grid w-[92%] gap-6 lg:grid-cols-[minmax(0,1fr)_280px]">
+        <div className="w-full">
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-muted">ToteType</p>
@@ -556,7 +556,7 @@ export default function Home() {
             </p>
           )}
 
-          <div className="mt-7 rounded-2xl border border-[#dbc9a2] bg-[#fffbef] p-5 md:mx-auto md:w-4/5">
+          <div className="mt-7 rounded-2xl border border-[#dbc9a2] bg-[#fffbef] p-5 md:mx-auto md:w-[92%]">
             <div className="mb-3 flex flex-wrap items-center justify-between gap-3">
               <p className="text-xs uppercase tracking-wide text-muted">{t.keyboardLayout}</p>
               <div className="flex items-center gap-2">
