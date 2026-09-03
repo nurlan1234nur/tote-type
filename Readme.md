@@ -1,23 +1,44 @@
-# ToteType
+# ToteType — Төте жазу бичгийн дасгал
 
-Kazakh Tote Jazu typing practice platform.
+Казах Төте жазу үсгээр бичих хурд, зөв байдлаа хөгжүүлэх сургалтын платформ.
 
-## Structure
+## Гол боломжууд
 
-frontend/  - Next.js typing app
-backend/   - Node.js API
+- Үг болон өгүүлбэрийн бичих дасгал
+- Санамсаргүй дасгалын текстийн API
+- WPM болон accuracy бодит цагийн хэмжилт
+- Төте жазу keyboard visualization
 
-## MVP features
+## Бүтэц
 
-- Tote Jazu typing practice (words and sentences)
-- Random text generation API
-- Live WPM and accuracy tracking
-- Basic Tote keyboard visualization
+```text
+frontend/  # Next.js typing application
+backend/   # Node.js API
+```
 
-## Run locally
+## Ажиллуулах
 
-1. Start API server
-   - `cd backend && npm run dev`
-2. Start frontend
-   - `cd frontend && npm run dev`
-3. Open `http://localhost:3000`
+Backend:
+
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Frontend:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Дараа нь `http://localhost:3000` хаягийг нээнэ.
+
+## Миний оролцоо
+
+Шаардлага болон сургалтын interaction-ыг тодорхойлж, AI-assisted байдлаар хөгжүүлсэн. Real-time typing metric, Unicode текст, keyboard mapping болон frontend/backend API урсгалыг судалсан.
+
+[Төслийн дэлгэрэнгүй тайлбар](PROJECT_OVERVIEW.md)
+
